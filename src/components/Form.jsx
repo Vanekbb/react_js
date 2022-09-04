@@ -1,42 +1,33 @@
-import style from './Form.css'
+import { useState } from 'react';
+import { AUTHOR } from '../constants';
+import style from './Form.css';
 
+export const Form = ({ addMessage }) => {
+  const [value, setValue] = useState('');
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    addMessage({
+      author: AUTHOR.user,
+      value,
+    });
+    setValue('');
+  };
 
-export const Form = () => {
-
-
-    const messageList = [
-        {
-            author:'',
-            text: ''
-        }
-    ]
-
-
-
-
-        const handleChangeName = (event) => {
-            messageList[0].author = event.target.value
-        }
-
-        const handleChangeText = (event) => {
-            messageList[0].text = event.target.value
-        }
-
-        const robotSend = () => {
-            const send = messageList[0].author
-            const robotSend = document.getElementById('send')
-            setTimeout(() => {
-                robotSend.innerHTML = "Hi," + send + '!'
-            }, 1500);
-        }
-
-
-        return <form className='form'>
-        <p><input id='author' type="text" placeholder="Name" onChange={handleChangeName}/></p>
-        <p><input type="text" placeholder="Text" onChange={handleChangeText}/></p>
-        <p><button type="button" className='btn' onClick={robotSend}>Send</button></p>
-        <p id="send"></p>
+  return (
+    <form onSubmit={handleSubmit} className="form">
+      <p>
+        <input
+          type="text"
+          value={value}
+          onChange={(event) => setValue(event.target.value)}
+        />
+      </p>
+      <p>
+        <button disabled={!value} className="btn">
+          SEND
+        </button>
+      </p>
     </form>
-
-} 
+  );
+};
