@@ -1,7 +1,7 @@
 export const MessageList = ({ messages }) => {
   return (
     <ul>
-      {messages.map((message, idx) => (
+      {messages?.map((message, idx) => (
         <li key={idx}>
           {message.author}: {message.value}
         </li>

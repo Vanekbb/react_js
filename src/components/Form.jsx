@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { AUTHOR } from '../constants';
+import { Button } from './Button';
 import style from './Form.css';
 
 export const Form = ({ addMessage }) => {
@@ -24,9 +25,7 @@ export const Form = ({ addMessage }) => {
         />
       </p>
       <p>
-        <button disabled={!value} className="btn">
-          SEND
-        </button>
+      <Button label={'SEND'} disabled={!value}/>
       </p>
     </form>
   );
