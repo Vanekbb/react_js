@@ -7,6 +7,10 @@ import { Messages } from 'src/types';
   .chat {
     background-color: whitesmoke;
   }
+
+  .chat-list {
+    left:47%
+  }
   `
 
 
@@ -22,7 +26,7 @@ export const MessageList: FC<MessageListProps> = ({ messages }) => {
     {css}
     </style>
       {messages?.map((message, idx) => (
-        <ListItem key={idx}>
+        <ListItem className='chat-list' key={idx}>
           {message.author}: {message.value}
         </ListItem>
       ))}
