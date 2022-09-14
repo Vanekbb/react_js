@@ -1,38 +1,61 @@
-import { useEffect } from 'react';
-import { useState, FC } from 'react';
-import { Form } from './components/Form';
+import { Routes, Route } from 'react-router-dom'
+import { Main } from './pages/Main'
+import { Profile } from './pages/Profile'
+import { FC, useState } from "react"
+import { ChatList } from './components/ChatList';
+import { Chat, Messages } from './types';
+import { ChatPage } from './pages/ChatPage';
 import { AUTHOR } from './constants';
-import { MessageList } from './MessageList/MessageList';
-import { Message, Messages } from './types';
+import { Header } from './components/Header';
+
+const defaultChats: Chat[] = [
+  {
+    id: '1',
+    name: 'first',
+  },
+  {
+    id: '2',
+    name: 'second',
+  },
+];
+
+const defaultMessages: Messages = {
+  '1': [{ author: AUTHOR.user, value: 'hello, world' }],
+  '2': [{ author: AUTHOR.bot, value: 'hello, im bot' }],
+};
 
 export const App: FC = () => {
-  const [messages, setMessages] = useState<Messages>([]);
+  const [chats, setChats] = useState<Chat[]>(defaultChats);
+  const [messages, setMessages] = useState<Messages>(defaultMessages);
 
-  const addMessage = (newMessage: Message) => {
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
+  const onAddChat = (newChat: Chat) => {
+    setChats([...chats, newChat]);
+    setMessages({
+      ...messages,
+      [newChat.id]: [],
+    });
   };
 
-  useEffect(() => {
-    if (
-      messages.length > 0 &&
-      messages[messages.length - 1].author === AUTHOR.user
-    ) {
-      const timeout = setTimeout(() => {
-        addMessage({
-          author: AUTHOR.bot,
-          value: 'Hi',
-        });
-      }, 1500);
-      return () => clearTimeout(timeout);
-    }
-  }, [messages]);
+  const onAddMessage = (chatId: string, newMessage: Message) => {
+    setMessages({
+      ...messages,
+      [chatId]: [...messages[chatId], newMessage],
+    });
+  };
 
   return (
-    <div>
-      <MessageList messages={messages} />
-      <Form addMessage={addMessage} />
-    </div>
+    <Routes>
+      <Route path='/' element={<Header />}>
+      <Route index  element={<Main />} />
+        <Route path='/profile' element={<Profile />} />
+        <Route path='/chats'>
+          <Route index element={<ChatList chats={chats} onAddChat={onAddChat} />} />
+          <Route path=':chatId' element={<ChatPage chats={chats} onAddChat={onAddChat} messages={messages} onAddMessage={onAddMessage} />} />
+        </Route>
+      </Route>
+      <Route path="*" element={<div>404 page</div>} />
+    </Routes>
   );
 };
 
-  export default App;
+export default App;
