@@ -1,12 +1,7 @@
 import { FC } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
+import style from './Header.module.css';
 
-const css = `
-.ul {
-    display: flex;
-    justify-content: space-around
-}
-`
 
 const navigate = [
     {
@@ -20,16 +15,13 @@ const navigate = [
     {
         name: 'Profile',
         path: '/profile'
-    }
+    },
 ]
 
 export const Header: FC = () => {
     return <div>
-        <style>
-        {css}
-      </style>
         <header>
-            <ul className='ul'>
+            <ul className={style.ul}>
                 {navigate.map((item, idx) => (
                     <li key={idx}>
                         <NavLink to={item.path} style={({ isActive }) => ({

@@ -7,6 +7,8 @@ import { Chat, Messages } from './types';
 import { ChatPage } from './pages/ChatPage';
 import { AUTHOR } from './constants';
 import { Header } from './components/Header';
+import { Provider } from 'react-redux'
+import { store } from './store';
 
 const defaultChats: Chat[] = [
   {
@@ -44,6 +46,7 @@ export const App: FC = () => {
   };
 
   return (
+    <Provider store={store}>
     <Routes>
       <Route path='/' element={<Header />}>
       <Route index  element={<Main />} />
@@ -55,6 +58,7 @@ export const App: FC = () => {
       </Route>
       <Route path="*" element={<div>404 page</div>} />
     </Routes>
+    </Provider>
   );
 };
 
