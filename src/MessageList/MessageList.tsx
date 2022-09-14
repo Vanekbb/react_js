@@ -16,7 +16,7 @@ import { Messages } from 'src/types';
 
 
   interface MessageListProps {
-    messages: Messages
+    messages: Messages[]
   }
 
 export const MessageList: FC<MessageListProps> = ({ messages }) => {
@@ -26,7 +26,7 @@ export const MessageList: FC<MessageListProps> = ({ messages }) => {
     {css}
     </style>
       {messages?.map((message, idx) => (
-        <ListItem className='chat-list' key={idx}>
+        <ListItem className='chat-list' key={idx} data-testid='li'>
           {message.author}: {message.value}
         </ListItem>
       ))}

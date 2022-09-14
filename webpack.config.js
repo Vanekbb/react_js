@@ -7,6 +7,13 @@ module.exports = {
         filename: 'bundle.js',
         path: path.resolve(__dirname, './build')
     },
+    devServer: {
+        client: {
+          logging: 'info',
+        },
+        compress: true,
+        historyApiFallback: true,
+      },
     resolve: {
         extensions: ['.js', '.jsx', '.ts', '.tsx']
     },
