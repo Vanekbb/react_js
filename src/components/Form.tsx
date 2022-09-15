@@ -6,6 +6,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { Message } from 'src/types';
+import style from './Form.module.css'
 
 
 interface FormProps {
@@ -27,20 +28,8 @@ export const Form: FC<FormProps> = (({ addMessage }) => {
     setValue('');
   };
 
-  const css = `
-  .form {
-    margin-top: 20px;
-    text-align: center;
-    border: 3px solid black;
-    background-color: white;
-  }
-  `
-
   return (
-    <form onSubmit={handleSubmit} className="form">
-      <style>
-        {css}
-      </style>
+    <form onSubmit={handleSubmit} className={style.form}>
       <p>
         <TextField
           inputProps={{ 'data-testid': 'input' }}
