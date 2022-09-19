@@ -1,26 +1,21 @@
 import { ListItem } from "@mui/material"
 import React, { FC, useState } from "react"
-import { Chat } from "src/types"
-import { nanoid } from 'nanoid';
 import { NavLink } from 'react-router-dom'
+import { useDispatch, useSelector } from "react-redux";
+import { addChat, deleteChat } from "/src/store/messages/actions";
+import { selectChats } from "/src/store/messages/selectors";
+import { nextTick } from "process";
 
-
-interface ChatListProps {
-    chats: Chat[];
-    onAddChat: (chat: Chat) => void;
-  }
-  
-  export const ChatList: FC<ChatListProps> = ({ chats, onAddChat }) => {
+  export const ChatList: FC = () => {
     const [value, setValue] = useState('');
-  
+    const dispatch = useDispatch()
+    const chats = useSelector(selectChats, (prev, next) => prev.length === next.length)
+
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
   
       if (value) {
-        onAddChat({
-          id: nanoid(),
-          name: value,
-        });
+        dispatch(addChat(value));
         setValue('');
       }
     };
@@ -29,7 +24,8 @@ interface ChatListProps {
         <ul>
             {chats.map((chat) => (
             <ListItem key={chat.id}>
-                <NavLink to={`/chats/${chat.id}`}>{chat.name}</NavLink>
+                <NavLink to={`/chats/${chat.name}`}>{chat.name}</NavLink>
+                <button onClick={() => dispatch(deleteChat(chat.name))}>Delete Chat</button>
             </ListItem>
             ))}
         </ul>

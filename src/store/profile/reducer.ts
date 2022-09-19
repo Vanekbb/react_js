@@ -8,7 +8,7 @@ export interface ProfileState {
 }
 
 const initialState: ProfileState = {
-    name: 'gb',
+    name: 'User',
     visible: true
 }
 

@@ -5,25 +5,22 @@ import { Button } from './Button';
 import InputAdornment from '@mui/material/InputAdornment';
 import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { Message } from 'src/types';
 import style from './Form.module.css'
+import { useDispatch } from 'react-redux';
+import { addMessage } from '/src/store/messages/actions';
 
-
-interface FormProps {
-  addMessage: (chatId: string, msg: Message) => void;
-}
-
-export const Form: FC<FormProps> = (({ addMessage }) => {
+export const Form: FC = (() => {
   const [value, setValue] = useState('');
   const { chatId } = useParams();
+  const dispatch = useDispatch()
 
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (chatId) {
-      addMessage(chatId, {
+      dispatch(addMessage(chatId, {
         author: AUTHOR.user,
         value,
-      });
+      }));
     }
     setValue('');
   };

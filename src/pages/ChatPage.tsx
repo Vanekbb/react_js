@@ -1,23 +1,17 @@
 import { FC, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams, Navigate } from 'react-router-dom'
 import { ChatList } from "/src/components/ChatList";
 import { Form } from "/src/components/Form";
 import { MessageList } from "/src/MessageList/MessageList";
-import { AUTHOR, Chat, Message, Messages } from "/src/types";
+import { AUTHOR } from "/src/types";
+import { selectMessages } from "/src/store/messages/selectors";
+import { addMessage } from "/src/store/messages/actions";
 
-interface ChatPageProps {
-    chats: Chat[];
-    onAddChat: (chat: Chat) => void;
-    messages: Messages;
-    onAddMessage: (chatId: string, msg: Message) => void;
-  }
-  export const ChatPage: FC<ChatPageProps> = ({
-    chats,
-    onAddChat,
-    messages,
-    onAddMessage,
-  }) => {
+  export const ChatPage: FC = () => {
     const { chatId } = useParams();
+    const messages = useSelector(selectMessages)
+    const dispatch = useDispatch()
   
     useEffect(() => {
       if (
@@ -26,15 +20,15 @@ interface ChatPageProps {
         messages[chatId][messages[chatId].length - 1].author === AUTHOR.USER
       ) {
         const timeout = setTimeout(() => {
-          onAddMessage(chatId, {
+          dispatch(addMessage(chatId, {
             author: AUTHOR.BOT,
             value: 'Im BOT',
-          });
+          }));
         }, 1500);
   
         return () => clearTimeout(timeout);
       }
-    }, [chatId, messages, onAddMessage]);
+    }, [chatId, messages, dispatch]);
   
     if (chatId && !messages[chatId]) {
       return <Navigate to="/chats" replace />;
@@ -42,9 +36,9 @@ interface ChatPageProps {
 
     return (
     <div>
-        <ChatList chats={chats} onAddChat={onAddChat} />
+        <ChatList />
         <MessageList messages={chatId ? messages[chatId] : []} />
-        <Form addMessage={onAddMessage} />
+        <Form />
     </div>
     )
 }
