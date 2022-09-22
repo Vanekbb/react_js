@@ -7,17 +7,20 @@ import TextField from '@mui/material/TextField';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import style from './Form.module.css'
 import { useDispatch } from 'react-redux';
-import { addMessage } from '/src/store/messages/actions';
+import { addMessageWithReply } from '/src/store/messages/actions';
+import { ThunkDispatch } from 'redux-thunk';
+import { StoreState } from '/src/store';
+import { AddMessage } from '/src/store/messages/types';
 
 export const Form: FC = (() => {
   const [value, setValue] = useState('');
   const { chatId } = useParams();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<ThunkDispatch<StoreState, void, AddMessage>>()
 
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (chatId) {
-      dispatch(addMessage(chatId, {
+      dispatch(addMessageWithReply(chatId, {
         author: AUTHOR.user,
         value,
       }));
