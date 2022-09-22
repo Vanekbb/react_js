@@ -1,29 +1,20 @@
-import { Routes, Route } from 'react-router-dom'
-import { Main } from './pages/Main'
-import { Profile } from './pages/Profile'
 import { FC } from "react"
-import { ChatList } from './components/ChatList';
-import { ChatPage } from './pages/ChatPage';
-import { Header } from './components/Header';
 import { Provider } from 'react-redux'
-import { store } from './store';
+import { persistor, store } from './store';
+import { PersistGate } from 'redux-persist/integration/react';
+import { AppRouter } from './components/AppRouter';
+import { BrowserRouter } from 'react-router-dom'
 
 export const App: FC = () => {
 
   return (
+    <PersistGate persistor={persistor}>
     <Provider store={store}>
-    <Routes>
-      <Route path='/' element={<Header />}>
-      <Route index  element={<Main />} />
-        <Route path='/profile' element={<Profile />} />
-        <Route path='/chats'>
-          <Route index element={<ChatList />} />
-          <Route path=':chatId' element={<ChatPage />} />
-        </Route>
-      </Route>
-      <Route path="*" element={<div>404 page</div>} />
-    </Routes>
+      <BrowserRouter>
+      <AppRouter />
+      </BrowserRouter>
     </Provider>
+    </PersistGate>
   );
 };
 
