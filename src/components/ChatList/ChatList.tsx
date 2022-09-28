@@ -2,7 +2,7 @@ import { ListItem } from "@mui/material"
 import React, { FC, useState } from "react"
 import { NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from "react-redux";
-import { addChat, deleteChat } from "/src/store/messages/actions";
+import { addChat, deleteChat } from "/src/store/messages/slice";
 import { selectChats } from "/src/store/messages/selectors";
 import { nextTick } from "process";
 
