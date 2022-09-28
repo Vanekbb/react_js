@@ -1,5 +1,5 @@
 import { configureStore, combineReducers } from '@reduxjs/toolkit'
-import { messagesReducer } from "./messages/reducer";
+import { messagesReducer } from "./messages/slice";
 import { profileReducer } from "./profile/slice";
 import { persistStore, persistReducer, FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
 import storage from "redux-persist/lib/storage";
@@ -7,7 +7,7 @@ import storage from "redux-persist/lib/storage";
     const persistConfig = {
         key: 'root',
         storage,
-        blacklist: ['profile']
+        blacklist: []
     }
 
     const rootReducer = combineReducers({
