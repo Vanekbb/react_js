@@ -19,13 +19,13 @@ import { Messages } from 'src/types';
     messages: Messages[]
   }
 
-export const MessageList: FC<MessageListProps> = ({ messages }) => {
+export const MessageList: FC<any> = ({ messages }) => {
   return (
     <List className='chat'>
     <style>
     {css}
     </style>
-      {messages?.map((message, idx) => (
+      {messages?.map((message: any, idx: number) => (
         <ListItem className='chat-list' key={idx} data-testid='li'>
           {message.author}: {message.value}
         </ListItem>

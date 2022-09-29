@@ -4,6 +4,7 @@ import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { StoreState } from '/src/store';
 import { auth } from '/src/store/profile/slice';
 import style from './Header.module.css';
+import { logOut } from '/src/services/firebase';
 
 
 const nav = [
@@ -30,12 +31,14 @@ export const Header: FC = () => {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const handleLogout = () => {
-        dispatch(auth(false))
-    }
+    const handleLogout = async () => {
+        try {
+            await logOut()
+        } catch (err) {
 
-    const handleLogin = () => {
-        navigate('/singin')
+        } finally {
+            dispatch(auth(false))
+        }
     }
 
     return <div>
@@ -52,7 +55,8 @@ export const Header: FC = () => {
         </header>
         <main>
             {isAuth && <button onClick={handleLogout}>Logout</button>}
-            {!isAuth && <button onClick={handleLogin}>Login</button>}
+            {!isAuth && <button onClick={() => navigate('/singin')}>Login</button>}
+            {!isAuth && <button onClick={() => navigate('/singup')}>SingUp</button>}
             <Outlet />
         </main>
     </div>

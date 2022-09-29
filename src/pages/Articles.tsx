@@ -1,6 +1,9 @@
-import { FC, useEffect, useState } from 'react'
-import { api } from '/src/constants'
+import { FC, useEffect } from 'react'
 import style from './Articles.module.css';
+import { StoreState } from '/src/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchData } from '/src/store/articles/slice';
+import { ThunkDispatch } from '@reduxjs/toolkit';
 
 interface IArticles {
     id: string,
@@ -8,39 +11,24 @@ interface IArticles {
 }
 
 export const Articles: FC = () => {
-    const [loading, setLoading] = useState(false)
-    const [articles, setArticles] = useState<IArticles[]>([])
-    const [error, setError] = useState('')
-    useEffect(() => {
-        getFetchArticles()
-    }, [])
+    const loading = useSelector((state: StoreState) => state.articles.loading)
+    const error = useSelector((state: StoreState) => state.articles.error)
+    const articles = useSelector((state: StoreState) => state.articles.articles)
+    
+    const fetchDispatch = useDispatch<ThunkDispatch<StoreState, void, any>>()
 
-    const getFetchArticles = async() => {
-        setLoading(true)
-        setError('')
-        setArticles([])
-        
-        await new Promise((resolve) => setTimeout(resolve, 1000))
-        
-        try {
-            const res = await fetch(`${api}/v3/articles`)
-            const data: IArticles[] = await res.json()
-            setArticles(data)
-        } catch (err) {
-            if (err instanceof Error) {
-            setError(err.message)
-            } else {
-                setError('Error')  
-            }
-        } finally {
-            setLoading(false)
-        }
+    const handleFetchData = () => {
+        fetchDispatch(fetchData())
     }
+
+    useEffect(() => {
+        handleFetchData()
+    }, [])
 
     return <div>
         <h2>Articles</h2>
         {loading && <div>Loading...</div>}
-        <button onClick={getFetchArticles}>Reload</button>
+        <button onClick={() => handleFetchData()}>Reload</button>
         <ul>
         {articles.map(article => <li key={article.id}>{article.title}</li>)}
         </ul>
