@@ -6,18 +6,20 @@ import { Form } from "/src/components/Form";
 import { MessageList } from "/src/MessageList/MessageList";
 import { selectMessages } from "/src/store/messages/selectors";
 
-  export const ChatPage: FC = () => {
+  export const ChatPage: FC<any> = ({ chats, messages }) => {
     const { chatId } = useParams();
-    const messages = useSelector(selectMessages)
+    //const messages = useSelector(selectMessages)
   
     if (chatId && !messages[chatId]) {
       return <Navigate to="/chats" replace />;
     }
 
+    const prepareMessages = [...Object.values((chatId && messages[chatId].messages) || {})]
+
     return (
     <div>
-        <ChatList />
-        <MessageList messages={chatId ? messages[chatId] : []} />
+        <ChatList chats={chats}/>
+        <MessageList messages={prepareMessages} />
         <Form />
     </div>
     )

@@ -10,6 +10,8 @@ import { useDispatch } from 'react-redux';
 import { addMessageWithReply } from '/src/store/messages/slice';
 import { ThunkDispatch } from 'redux-thunk';
 import { StoreState } from '/src/store';
+import { push, ref } from 'firebase/database';
+import { db } from '/src/services/firebase';
 
 export const Form: FC = (() => {
   const [value, setValue] = useState('');
@@ -19,10 +21,10 @@ export const Form: FC = (() => {
   const handleSubmit = (ev: React.FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (chatId) {
-      dispatch(addMessageWithReply({
-        chatName: chatId,
-        message: { author: AUTHOR.user, value },
-      }));
+      push(ref(db, `messages/${chatId}/messages`), {
+        author: AUTHOR.user,
+        value
+      })
     }
     setValue('');
   };
